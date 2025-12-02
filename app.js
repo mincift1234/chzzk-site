@@ -253,3 +253,23 @@ async function deleteCommand(key) {
         alert("명령어 삭제 실패: " + err.message);
     }
 }
+
+// 치지직 계정 연동 버튼
+chzzkConnectBtn.onclick = () => {
+    if (!currentUser) {
+        alert("먼저 로그인 해 주세요.");
+        return;
+    }
+    const clientId = "여기에_네_CHZZK_CLIENT_ID";
+    const redirectUri = encodeURIComponent("https://너.netlify.app/.netlify/functions/chzzk-oauth-callback");
+    const state = currentUser.uid; // 나중에 콜백에서 uid로 쓰임
+
+    const url =
+        "https://chzzk.naver.com/account-interlock" +
+        "?response_type=code" +
+        `&clientId=${clientId}` +
+        `&redirectUri=${redirectUri}` +
+        `&state=${state}`;
+
+    window.location.href = url;
+};
