@@ -260,9 +260,14 @@ chzzkConnectBtn.onclick = () => {
         alert("먼저 로그인 해 주세요.");
         return;
     }
-    const clientId = "여기에_네_CHZZK_CLIENT_ID";
-    const redirectUri = encodeURIComponent("https://너.netlify.app/.netlify/functions/chzzk-oauth-callback");
-    const state = currentUser.uid; // 나중에 콜백에서 uid로 쓰임
+
+    // ▶ 실제 발급받은 CLIENT_ID
+    const clientId = "9189723d-104c-45f9-bd34-d04d74800308";
+
+    // ▶ 실제 Netlify 함수 주소 (치지직 개발자센터 리디렉션 URL과 100% 같게)
+    const redirectUri = encodeURIComponent("https://chzzk-site.netlify.app/.netlify/functions/chzzk-oauth-callback");
+
+    const state = currentUser.uid; // 콜백에서 uid로 사용
 
     const url =
         "https://chzzk.naver.com/account-interlock" +
