@@ -25,7 +25,6 @@ const logoutBtn = document.getElementById("logoutBtn");
 const userInfoSpan = document.getElementById("userInfo");
 
 const channelNameInput = document.getElementById("channelName");
-const refreshTokenInput = document.getElementById("refreshToken");
 const botEnabledCheckbox = document.getElementById("botEnabledCheckbox");
 
 const botStatusBadge = document.getElementById("botStatusBadge");
@@ -118,7 +117,6 @@ async function loadUserSettings(user) {
     const data = userSnap.data() || {};
 
     channelNameInput.value = data.chzzkChannelName || "";
-    refreshTokenInput.value = data.chzzkRefreshToken || "";
     botEnabledCheckbox.checked = !!data.botEnabled;
 
     updateBotStatusBadge();
@@ -133,7 +131,6 @@ saveUserBtn.addEventListener("click", async () => {
 
     const payload = {
         chzzkChannelName: channelNameInput.value.trim(),
-        chzzkRefreshToken: refreshTokenInput.value.trim() || null,
         botEnabled: botEnabledCheckbox.checked,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     };
