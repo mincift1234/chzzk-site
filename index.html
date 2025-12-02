@@ -2,154 +2,10 @@
 <html lang="ko">
     <head>
         <meta charset="UTF-8" />
-        <title>치지직 봇 관리</title>
+        <title>치지직 봇 패널</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <style>
-            body {
-                background: #080a11;
-                color: #f5f5f5;
-                font-family:
-                    system-ui,
-                    -apple-system,
-                    BlinkMacSystemFont,
-                    "Segoe UI",
-                    sans-serif;
-                margin: 0;
-                padding: 0;
-            }
-            header {
-                padding: 16px 24px;
-                border-bottom: 1px solid #2a2d3a;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-            header h1 {
-                font-size: 18px;
-                margin: 0;
-            }
-            .container {
-                max-width: 900px;
-                margin: 0 auto;
-                padding: 24px 16px 80px;
-            }
-            .card {
-                background: #111520;
-                border-radius: 12px;
-                padding: 16px 18px;
-                margin-bottom: 16px;
-                border: 1px solid #23283b;
-            }
-            .card h2 {
-                margin: 0 0 10px;
-                font-size: 16px;
-            }
-            label {
-                display: block;
-                font-size: 13px;
-                margin-bottom: 4px;
-                color: #c9cbe5;
-            }
-            input[type="text"],
-            textarea {
-                width: 100%;
-                padding: 8px 10px;
-                border-radius: 8px;
-                border: 1px solid #30364a;
-                background: #080b14;
-                color: #f5f5f5;
-                font-size: 13px;
-                box-sizing: border-box;
-                outline: none;
-            }
-            input[type="text"]:focus,
-            textarea:focus {
-                border-color: #4f8cff;
-            }
-            textarea {
-                min-height: 60px;
-                resize: vertical;
-            }
-            .row {
-                display: flex;
-                gap: 12px;
-                flex-wrap: wrap;
-            }
-            .row > div {
-                flex: 1 1 200px;
-            }
-            button {
-                background: #4f8cff;
-                border: none;
-                border-radius: 999px;
-                padding: 8px 16px;
-                font-size: 13px;
-                color: white;
-                cursor: pointer;
-            }
-            button.secondary {
-                background: #262a3d;
-            }
-            button:disabled {
-                opacity: 0.5;
-                cursor: default;
-            }
-            .badge {
-                display: inline-flex;
-                align-items: center;
-                padding: 4px 10px;
-                border-radius: 999px;
-                font-size: 11px;
-                background: #15192b;
-                border: 1px solid #30364a;
-                gap: 6px;
-            }
-            .badge-dot {
-                width: 8px;
-                height: 8px;
-                border-radius: 999px;
-                background: #ff4f6a;
-            }
-            .badge-dot.on {
-                background: #46d369;
-            }
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                font-size: 13px;
-                margin-top: 8px;
-            }
-            th,
-            td {
-                border-bottom: 1px solid #262a37;
-                padding: 6px 4px;
-                text-align: left;
-            }
-            th {
-                font-weight: 500;
-                color: #cfd2ff;
-            }
-            td:last-child {
-                text-align: right;
-            }
-            .danger {
-                color: #ff4f6a;
-                cursor: pointer;
-                font-size: 12px;
-            }
-            .muted {
-                font-size: 12px;
-                color: #9597b5;
-            }
-            #loginSection {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                min-height: 100vh;
-                flex-direction: column;
-                gap: 16px;
-            }
-        </style>
+
+        <link rel="stylesheet" href="styles.css" />
 
         <!-- Firebase compat SDK -->
         <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -157,94 +13,165 @@
         <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     </head>
     <body>
-        <div id="loginSection">
-            <h1>치지직 봇 관리</h1>
-            <p class="muted">구글 계정으로 로그인해서 명령어 / 봇 설정을 관리합니다.</p>
-            <button id="googleLoginBtn">구글로 로그인</button>
+        <!-- 로그인 화면 -->
+        <div id="loginSection" class="auth-screen">
+            <div class="auth-card">
+                <div class="auth-logo">CHZZK BOT</div>
+                <h1 class="auth-title">치지직 봇 패널</h1>
+                <p class="auth-subtitle">
+                    구글 계정으로 로그인해서<br />
+                    명령어와 봇 설정을 관리할 수 있습니다.
+                </p>
+                <button id="googleLoginBtn" class="btn primary wide">구글 계정으로 로그인</button>
+                <p class="auth-footer">두 명까지만 사용할 개인용 패널입니다.</p>
+            </div>
         </div>
 
-        <div id="appSection" style="display: none">
-            <header>
-                <h1>치지직 봇 관리</h1>
-                <div>
-                    <span id="userInfo" class="muted"></span>
-                    <button id="logoutBtn" class="secondary">로그아웃</button>
+        <!-- 로그인 이후 대시보드 -->
+        <div id="appSection" class="app-layout" style="display: none">
+            <!-- 상단 바 -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <div class="topbar-logo">CHZZK BOT</div>
+                    <div class="topbar-divider"></div>
+                    <div class="topbar-page">대시보드</div>
+                </div>
+                <div class="topbar-right">
+                    <span id="userInfo" class="topbar-user"></span>
+                    <button id="logoutBtn" class="btn ghost small">로그아웃</button>
                 </div>
             </header>
 
-            <div class="container">
-                <!-- 치지직 연동/봇 설정 카드 -->
-                <div class="card">
-                    <h2>치지직 계정 연동 / 봇 설정</h2>
-                    <p class="muted" style="margin-bottom: 10px">
-                        계정 연동 버튼을 누르면 치지직 로그인 후 자동으로 연동됩니다.
-                    </p>
-                    <div class="row">
-                        <div>
-                            <label for="channelName">치지직 채널명 (메모용)</label>
-                            <input type="text" id="channelName" placeholder="예: AndK" />
+            <!-- 본문 레이아웃 -->
+            <div class="app-body">
+                <!-- 사이드바 -->
+                <aside class="sidebar">
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">메뉴</div>
+                        <button class="sidebar-item active" type="button">대시보드</button>
+                        <button class="sidebar-item" type="button" disabled>(추가 예정)</button>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">봇 상태</div>
+                        <div class="badge">
+                            <span id="botStatusDot" class="badge-dot"></span>
+                            <span id="botStatusText" class="badge-text">OFF</span>
                         </div>
-                        <div>
-                            <label>봇 상태</label>
-                            <div class="badge">
-                                <span class="badge-dot" id="botStatusDot"></span>
-                                <span id="botStatusText">OFF</span>
+                    </div>
+                </aside>
+
+                <!-- 메인 컨텐츠 -->
+                <main class="content">
+                    <!-- 치지직 연동 / 봇 설정 -->
+                    <section class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">치지직 계정 연동 / 봇 설정</h2>
+                                <p class="card-subtitle">
+                                    계정 연동 버튼을 누르면 치지직 로그인 후 자동으로 연동됩니다.
+                                </p>
                             </div>
                         </div>
-                    </div>
 
-                    <div
-                        style="
-                            margin-top: 12px;
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            gap: 8px;
-                        ">
-                        <div>
-                            <label style="display: flex; align-items: center; gap: 6px">
-                                <input type="checkbox" id="botEnabledCheckbox" />
-                                봇 사용 (botEnabled)
-                            </label>
-                            <div class="muted">체크하면 Render에 떠 있는 봇이 이 계정 채널에 접속합니다.</div>
-                        </div>
-                        <div style="display: flex; gap: 8px">
-                            <button id="chzzkConnectBtn" type="button">치지직 계정 연동</button>
-                            <button id="saveUserBtn" type="button">설정 저장</button>
-                        </div>
-                    </div>
-                </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="channelName">치지직 채널명 (메모용)</label>
+                                    <input id="channelName" type="text" class="input" placeholder="예: AndK" />
+                                </div>
 
-                <!-- 명령어 관리 -->
-                <div class="card">
-                    <h2>명령어 관리</h2>
-                    <p class="muted">FireStore <code>commands/{uid}</code>에 저장되는 내용입니다.</p>
+                                <div class="form-field">
+                                    <label>봇 사용</label>
+                                    <label class="checkbox-row">
+                                        <input type="checkbox" id="botEnabledCheckbox" />
+                                        <span>봇 사용 (botEnabled)</span>
+                                    </label>
+                                    <p class="field-help">체크하면 Render에 떠 있는 봇이 이 계정 채널에 접속합니다.</p>
+                                </div>
+                            </div>
 
-                    <div class="row" style="margin-top: 8px">
-                        <div>
-                            <label for="newCommandKey">명령어 (예: !감도)</label>
-                            <input type="text" id="newCommandKey" />
+                            <div class="form-actions">
+                                <div class="form-actions-left">
+                                    <div class="status-pill">
+                                        <span class="status-label">현재 상태</span>
+                                        <span class="badge">
+                                            <span id="botStatusDot" class="badge-dot"></span>
+                                            <span id="botStatusText" class="badge-text">OFF</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-actions-right">
+                                    <button id="chzzkConnectBtn" class="btn secondary" type="button">
+                                        치지직 계정 연동
+                                    </button>
+                                    <button id="saveUserBtn" class="btn primary" type="button">설정 저장</button>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label for="newCommandValue">봇이 말할 내용</label>
-                            <input type="text" id="newCommandValue" />
-                        </div>
-                        <div style="align-self: flex-end">
-                            <button id="addCommandBtn" type="button">추가 / 수정</button>
-                        </div>
-                    </div>
+                    </section>
 
-                    <table id="commandsTable">
-                        <thead>
-                            <tr>
-                                <th>명령어</th>
-                                <th>내용</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
+                    <!-- 명령어 관리 -->
+                    <section class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">명령어 관리</h2>
+                                <p class="card-subtitle">
+                                    !명령어 형태로 입력하면, 봇이 해당 내용을 채팅에 출력합니다.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <!-- 새 명령어 입력 -->
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="newCommandKey">명령어</label>
+                                    <input id="newCommandKey" type="text" class="input" placeholder="예: !감도" />
+                                </div>
+                                <div class="form-field">
+                                    <label for="newCommandValue">봇이 말할 내용</label>
+                                    <input
+                                        id="newCommandValue"
+                                        type="text"
+                                        class="input"
+                                        placeholder="예: DPI 800, IN GAME SENS 0.164" />
+                                </div>
+                                <div class="form-field form-field--button">
+                                    <label>&nbsp;</label>
+                                    <button id="addCommandBtn" class="btn primary" type="button">추가 / 수정</button>
+                                </div>
+                            </div>
+
+                            <!-- 명령어 리스트 -->
+                            <div class="table-wrap">
+                                <table class="table" id="commandsTable">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 160px">명령어</th>
+                                            <th>내용</th>
+                                            <th style="width: 80px"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- app.js에서 렌더링 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 하단 안내 -->
+                    <section class="card card--muted">
+                        <div class="card-body small">
+                            <p>
+                                · 이 패널은 테스트용 개인 패널입니다. 나중에 디자인/기능을 자유롭게 바꿔도, Firestore
+                                컬렉션 구조 (<code>users</code>, <code>commands</code>)만 유지하면 Render에 있는 봇은
+                                그대로 동작합니다.
+                            </p>
+                        </div>
+                    </section>
+                </main>
             </div>
         </div>
 
