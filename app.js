@@ -259,7 +259,7 @@ chzzkConnectBtn.onclick = () => {
     }
 
     // ▶ 실제 발급받은 CLIENT_ID
-    const clientId = "9189723d-104c-45f9-bd34-d04d74800308";
+    const clientId = "47700bd3-b652-49a8-9a3a-e97d0f90d2bd";
 
     // ▶ 실제 Netlify 함수 주소 (치지직 개발자센터 리디렉션 URL과 100% 같게)
     const redirectUri = encodeURIComponent("https://chzzk-site.netlify.app/.netlify/functions/chzzk-oauth-callback");
@@ -275,3 +275,4 @@ chzzkConnectBtn.onclick = () => {
 
     window.location.href = url;
 };
+
